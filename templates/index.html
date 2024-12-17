@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <title>Noticias Del Mundo</title>
+  </head>
+  <body>
+    <div id="container" class="{{ 'show-sidebar' if show_sidebar else '' }}">
+      <header id="cabecero" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 class="gato">Noticias Por El Mundo</h1>
+        <form action="/" method="GET" id="toggle-sidebar">
+          <input type="hidden" name="show_sidebar" value="{{ not show_sidebar }}" />
+          <button type="submit" style="padding: 10px 20px;">{{ "Ocultar Barra" if show_sidebar else "°°°" }}</button>
+        </form>
+      </header>
+
+      <div id="main-content">
+        <nav>
+          <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/ayuda">Ayuda</a></li>
+            {% if session.get('usuario') %}
+              <li><span>Bienvenido, {{ session['usuario'] }}!</span></li>
+              <li><a href="/discord">Discord</a></li>
+            {% endif %}
+          </ul>
+          <div class="busqueda-centrada">
+            <form action="/" method="GET" class="busqueda">
+              <input type="text" name="categoria" placeholder="Qué desea buscar" />
+              <button type="submit">Buscar</button>
+            </form>
+          </div>
+        </nav>
+
+        <section id="news">
+          {% if noticias %}
+            {% for noticia in noticias %}
+            <article>
+              <h1>{{ noticia.title }}</h1>
+              <img src="{{ noticia.image }}" alt="Imagen de {{ noticia.title }}" />
+              <p>Fuente: {{ noticia.source }} | Fecha: {{ noticia.date }}</p>
+              <a href="{{ noticia.url }}" target="_blank">Leer más</a>
+            </article>
+            {% endfor %}
+          {% else %}
+            <p>No se encontraron noticias para esta categoría.</p>
+          {% endif %}
+        </section>
+
+        <form action="/" method="GET" style="text-align: center; margin-top: 20px;">
+          <input type="hidden" name="categoria" value="{{ categoria }}" />
+          <input type="hidden" name="offset" value="{{ offset }}" />
+          <button type="submit" style="padding: 10px 20px;">Cargar más noticias</button>
+        </form>
+      </div>
+
+      <aside id="sidebar">
+        <h3>Menú</h3>
+        <ul>
+          <li><a href="/">Cerrar Menú</a></li>
+          {% if not session.get('usuario') %}
+          <li>
+            <form action="/login" method="GET">
+              <button type="submit" style="padding: 10px 20px;">Iniciar Sesión</button>
+            </form>
+          </li>
+          {% else %}
+          <li>
+            <form action="/logout" method="POST">
+              <button type="submit" style="padding: 10px 20px;">Cerrar Sesión</button>
+            </form>
+          </li>
+          {% endif %}
+        </ul>
+      </aside>
+
+      <footer id="ender">
+        <p class="remember">Recuerda seguir la web</p>
+      </footer>
+    </div>
+  </body>
+</html>

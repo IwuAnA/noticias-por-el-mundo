@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <title>Iniciar Sesión</title>
+  </head>
+  <body>
+
+    <div id="container" style="text-align: center; margin-top: 50px;">
+
+      <div>
+      <form action="/" method="GET">
+          <button class="btn-regresar" href="/">Regresar Inicio</button>
+      </form>
+      </div>
+      {% block content %}
+      <h1>Iniciar Sesión</h1>
+      <form action="{{ url_for('login') }}" method="POST" class="login">
+        <p class="error">{{error}}</p>
+
+        <label for="name">Nombre:</label>
+          <input type="text" id="name" name="name" required />
+        </label>
+
+        <label for="email">Correo:
+          <input type="email" id="email" name="email" required />
+        </label>
+
+        
+        <label for="password">Contraseña:
+          <input type="password" id="password" name="password" required />
+        </label>
+        
+            <button class="form__button">Iniciar sesión</button>
+      </form>
+      {% endblock %}
+
+      <div>
+        <ul class="cuentas">
+          <li><a href="/register">No tienes cuenta?</a></li>
+          <li><a href="/fgtpassword">olvidaste la contraseña?</a></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
